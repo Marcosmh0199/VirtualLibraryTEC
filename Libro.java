@@ -17,6 +17,9 @@ public class Libro {
 		Precio = pPrecio;
 		FotoLibro = pFotoLibro;
 	}
+	public Libro() {
+		
+	}
 	public void setIssn(String pIssn) {
 		Issn = pIssn;
 	}
@@ -41,5 +44,28 @@ public class Libro {
 	public void setFotoLibro(File pFotoLibro) {
 		FotoLibro = pFotoLibro;
 	}
+	public String getIssn() {
+		return Issn;
+	}
+	public String getNombre() {
+		return Nombre;
+	}
+	public String getTema() {
+		return Tema;
+	}
+	public String getDescripcion() {
+		return Descripcion;
+	}
+	public int getCantidadVendida() {
+		return CantidadVendida;
+	}
+	public int getCantidadDisponible() {
+		return CantidadDisponible;
+	}
+	public int getPrecio() {
+		return Precio;
+	}
+	public File getFotoLibro() {
+		return FotoLibro;
+	}
 }
-
