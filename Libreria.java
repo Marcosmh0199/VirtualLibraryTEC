@@ -4,13 +4,20 @@ public class Libreria extends Libro{
 	String Nombre, Pais, Ubicacion, Horario, Telefono;
 	Libro libro;
 	
-	public Libreria(Libro plibro,String pNombre,String pPais, String pUbicacion, String pHorario, String pTelefono) {
+	public Libreria(String pNombre,String pPais, String pUbicacion, String pHorario, String pTelefono) {
 		Nombre = pNombre;
 		Pais = pPais;
 		Ubicacion = pUbicacion;
 		Horario = pHorario;
 		Telefono = pTelefono;
-		libro = plibro;
+		
+	}
+	public Libreria() {
+		Nombre = "pNombre";
+		Pais = "pPais";
+		Ubicacion = "pUbicacion";
+		Horario = "pHorario";
+		Telefono = "pTelefono";
 	}
 	public void setNombreLibreria(String pNombre) {
 		Nombre = pNombre;
