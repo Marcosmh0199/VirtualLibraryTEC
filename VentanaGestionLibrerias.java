@@ -1,24 +1,24 @@
-package Proyecto1;
+package control;
 
 import java.io.*;
-import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
-import java.awt.Color;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class VentanaGestionLibrerias extends JFrame {
+public class VentanaGestionLibrerias extends JFrame{
 	GestionLibrerias libreria = new GestionLibrerias();
 	public static String listadespegable;
 	public JPanel contentPane;
@@ -27,11 +27,15 @@ public class VentanaGestionLibrerias extends JFrame {
 	public static JTextField txtubicacion;
 	public static JTextField txthorario;
 	public static JTextField txttelefono;
+	public static JComboBox<Libreria> eliminarlibreriasbox = new JComboBox<Libreria>();
+	public static JComboBox<Libreria> consultarlibreriasbox = new JComboBox<Libreria>();
 	private JTextField txtnombre2;
 	private JTextField txtpais2;
 	private JTextField txtubicacion2;
 	private JTextField txthorario2;
 	private JTextField txttelefono2;
+	public static VentanaGestionLibrerias frame = new VentanaGestionLibrerias();
+	private JTextField txtlibros;
 
 	/**
 	 * Launch the application.
@@ -40,7 +44,6 @@ public class VentanaGestionLibrerias extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VentanaGestionLibrerias frame = new VentanaGestionLibrerias();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,8 +56,9 @@ public class VentanaGestionLibrerias extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaGestionLibrerias() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 949, 591);
+		setTitle("Gesti\u00F3n de Librerias");
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setBounds(0, 0, 948, 623);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -62,10 +66,9 @@ public class VentanaGestionLibrerias extends JFrame {
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				Menu ventanatemporal = new Menu();
-				VentanaGestionLibrerias.this.dispose();
-				
+				VentanaGestionLibrerias.this.hide();
 			}
 		});
 		btnVolver.setBounds(121, 252, 89, 23);
@@ -91,32 +94,18 @@ public class VentanaGestionLibrerias extends JFrame {
 		txthorario.setBounds(121, 155, 269, 20);
 		contentPane.add(txthorario);
 		
+
 		txttelefono = new JTextField();
 		txttelefono.setColumns(10);
 		txttelefono.setBounds(121, 192, 269, 20);
 		contentPane.add(txttelefono);
 		
-		JComboBox<String> eliminarlibreriasbox = new JComboBox<String>();
-		eliminarlibreriasbox.setBounds(490, 36, 167, 20);
+		eliminarlibreriasbox.setBounds(490, 36, 262, 20);
 		contentPane.add(eliminarlibreriasbox);
 		
-		JComboBox consultarlibreriasbox = new JComboBox();
 		consultarlibreriasbox.setBounds(742, 362, 181, 20);
 		contentPane.add(consultarlibreriasbox);
-		
-		JButton btnAadirLibreria = new JButton("A\u00F1adir Libreria");
-		btnAadirLibreria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				libreria.insert(libreria);
-				String nombre = txtnombre.getText();
-				eliminarlibreriasbox.addItem(nombre);
-				consultarlibreriasbox.addItem(nombre);
-			}
 			
-		});
-		btnAadirLibreria.setBounds(121, 223, 150, 23);
-		contentPane.add(btnAadirLibreria);
-		
 		JLabel lblNewLabel = new JLabel("Nombre");
 		lblNewLabel.setBounds(63, 36, 64, 14);
 		contentPane.add(lblNewLabel);
@@ -170,13 +159,13 @@ public class VentanaGestionLibrerias extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String LibreriaBorrar = eliminarlibreriasbox.getSelectedItem().toString();
-				libreria.remove(LibreriaBorrar);
+				libreria.setcurrent((Libreria) eliminarlibreriasbox.getSelectedItem());
+				libreria.remove();
 				eliminarlibreriasbox.removeItem(eliminarlibreriasbox.getSelectedItem());
-				consultarlibreriasbox.removeItem(eliminarlibreriasbox.getSelectedItem());
+				consultarlibreriasbox.removeItem(consultarlibreriasbox.getSelectedItem());
 			}
 		});
-		btnEliminar.setBounds(667, 35, 89, 23);
+		btnEliminar.setBounds(762, 35, 89, 23);
 		contentPane.add(btnEliminar);
 		
 		JSeparator separator_4 = new JSeparator();
@@ -193,19 +182,19 @@ public class VentanaGestionLibrerias extends JFrame {
 		contentPane.add(lblConsultarLibrerias);
 		
 		JLabel lbltelefono2 = new JLabel("Telefono");
-		lbltelefono2.setBounds(177, 518, 64, 14);
+		lbltelefono2.setBounds(177, 524, 64, 14);
 		contentPane.add(lbltelefono2);
 		
 		JLabel lblhorario2 = new JLabel("Horario");
-		lblhorario2.setBounds(177, 481, 64, 14);
+		lblhorario2.setBounds(177, 487, 64, 14);
 		contentPane.add(lblhorario2);
 		
 		JLabel lblubicacion2 = new JLabel("Ubicaci\u00F3n");
-		lblubicacion2.setBounds(177, 440, 64, 14);
+		lblubicacion2.setBounds(177, 446, 64, 14);
 		contentPane.add(lblubicacion2);
 		
 		JLabel lblpais2 = new JLabel("Pais");
-		lblpais2.setBounds(177, 406, 64, 14);
+		lblpais2.setBounds(177, 409, 64, 14);
 		contentPane.add(lblpais2);
 		
 		JLabel lblNombre2 = new JLabel("Nombre");
@@ -245,16 +234,41 @@ public class VentanaGestionLibrerias extends JFrame {
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String LibreriaConsultar = consultarlibreriasbox.getSelectedItem().toString();
-				libreria.getdatos();
-				txtnombre2.setText(libreria.getlibreria().Nombre);
-				txtpais2.setText(libreria.getlibreria().Pais);
-				txtubicacion2.setText(libreria.getlibreria().Ubicacion);
-				txthorario2.setText(libreria.getlibreria().Horario);
-				txttelefono2.setText(libreria.getlibreria().Telefono);
+				libreria.setcurrent((Libreria) consultarlibreriasbox.getSelectedItem());
+				txtnombre2.setText(libreria.Getlibreria().Nombre);
+				txtpais2.setText(libreria.Getlibreria().Pais);
+				txtubicacion2.setText(libreria.Getlibreria().Ubicacion);
+				txthorario2.setText(libreria.Getlibreria().Horario);
+				txttelefono2.setText(libreria.Getlibreria().Telefono);
+				//txtlibros.setText(((Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem()).getlibros().toString());
+				txtlibros.setText((((Libreria) consultarlibreriasbox.getSelectedItem()).getlibros().toString()));
 			}
 		});
 		btnConsultar.setBounds(742, 402, 89, 23);
 		contentPane.add(btnConsultar);
+		
+		JButton btnAadirLibreria = new JButton("A\u00F1adir Libreria");
+		btnAadirLibreria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Libreria lib2 = new Libreria(VentanaGestionLibrerias.txtnombre.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
+				libreria.append(lib2);
+				eliminarlibreriasbox.addItem(lib2);
+				consultarlibreriasbox.addItem(lib2);
+				VentanaGestionLibros.LibreriaBox.addItem(lib2);
+			}
+			
+		});
+		btnAadirLibreria.setBounds(121, 223, 150, 23);
+		contentPane.add(btnAadirLibreria);
+		
+		JLabel lblLibros = new JLabel("Libros");
+		lblLibros.setBounds(177, 559, 46, 14);
+		contentPane.add(lblLibros);
+		
+		txtlibros = new JTextField();
+		txtlibros.setEditable(false);
+		txtlibros.setColumns(10);
+		txtlibros.setBounds(235, 549, 486, 20);
+		contentPane.add(txtlibros);
 	}
 }
