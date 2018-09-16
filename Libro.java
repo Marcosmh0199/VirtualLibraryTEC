@@ -1,21 +1,19 @@
-package Proyecto1;
-
-import java.io.*;
+package control;
 
 public class Libro {
 	String Issn, Nombre, Tema, Descripcion;
 	int CantidadVendida, CantidadDisponible, Precio;
-	File FotoLibro;
+	Libreria libreria;
 	
-	public Libro(String pIssn,String pNombre,String pTema,String pDescripcion, int pCantidadVendida,int pCantidadDisponible, int pPrecio, File pFotoLibro) {
+	public Libro(String pIssn,String pNombre,String pTema,String pDescripcion,int pCantidadDisponible, int pPrecio,Libreria plibreria) {
 		Issn = pIssn;
 		Nombre = pNombre;
 		Tema = pTema;
 		Descripcion = pDescripcion;
-		CantidadVendida = pCantidadVendida;
+		CantidadVendida = 0;
 		CantidadDisponible = pCantidadDisponible;
 		Precio = pPrecio;
-		FotoLibro = pFotoLibro;
+		libreria=plibreria;
 	}
 	public Libro() {
 		
@@ -41,9 +39,6 @@ public class Libro {
 	public void setPrecio(int pPrecio) {
 		Precio = pPrecio;
 	}
-	public void setFotoLibro(File pFotoLibro) {
-		FotoLibro = pFotoLibro;
-	}
 	public String getIssn() {
 		return Issn;
 	}
@@ -65,7 +60,8 @@ public class Libro {
 	public int getPrecio() {
 		return Precio;
 	}
-	public File getFotoLibro() {
-		return FotoLibro;
+	@Override
+	public String toString() {
+		return Nombre;
 	}
 }
