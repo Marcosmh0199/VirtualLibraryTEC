@@ -1,4 +1,4 @@
-package Proyecto1;
+package control;
 
 import java.awt.EventQueue;
 
@@ -13,6 +13,10 @@ public class Menu {
 
 	public JFrame frmMenu;
 
+	public static int x=0;
+	public static int y=0;
+	public VentanaGestionLibrerias ventana1 ;
+	public VentanaGestionLibros ventana2 ;
 	/**
 	 * Launch the application.
 	 */
@@ -43,33 +47,47 @@ public class Menu {
 		frmMenu = new JFrame();
 		frmMenu.setTitle("Menu");
 		frmMenu.setBounds(100, 100, 500, 340);
-		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmMenu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMenu.getContentPane().setLayout(null);
 		
 		JButton btnBotonFuncion1 = new JButton("Gesti\u00F3n de librer\u00EDas");
 		btnBotonFuncion1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				VentanaGestionLibrerias ventanatemporal = new VentanaGestionLibrerias();
-				ventanatemporal.setVisible(true);
+				if (x==0) {
+					ventana1 = new VentanaGestionLibrerias();
+					ventana1.setVisible(true);
+					x=1;
+				}
+				ventana1.setVisible(true);
 			}
 		});
-		btnBotonFuncion1.setBounds(163, 21, 152, 23);
+		btnBotonFuncion1.setBounds(147, 21, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion1);
 		
 		JButton btnBotonFuncion2 = new JButton("Gestion de Libros");
-		btnBotonFuncion2.setBounds(163, 55, 152, 23);
+		btnBotonFuncion2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (y==0) {
+					ventana2 = new VentanaGestionLibros();
+					ventana2.setVisible(true);
+					y=1;
+				}
+				ventana2.setVisible(true);
+			}
+		});
+		btnBotonFuncion2.setBounds(147, 55, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion2);
 		
 		JButton btnBotonFuncion3 = new JButton("Buscar Libros Disponibles");
-		btnBotonFuncion3.setBounds(163, 89, 152, 23);
+		btnBotonFuncion3.setBounds(147, 89, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion3);
 		
 		JButton btnBotonFuncion4 = new JButton("Pedidos de Libros");
-		btnBotonFuncion4.setBounds(163, 123, 152, 23);
+		btnBotonFuncion4.setBounds(147, 123, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion4);
 		
 		JButton btnBotonFuncion5 = new JButton("Atenci\u00F3n de Pedidos");
-		btnBotonFuncion5.setBounds(163, 199, 152, 23);
+		btnBotonFuncion5.setBounds(147, 199, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion5);
 		
 		JButton btnSalir = new JButton("Salir");
