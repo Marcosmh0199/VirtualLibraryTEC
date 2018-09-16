@@ -1,8 +1,8 @@
-package Proyecto1;
+package control;
 
-public class Libreria extends Libro{
+public class Libreria{
 	String Nombre, Pais, Ubicacion, Horario, Telefono;
-	Libro libro;
+	GestionLibros libros;
 	
 	public Libreria(String pNombre,String pPais, String pUbicacion, String pHorario, String pTelefono) {
 		Nombre = pNombre;
@@ -10,14 +10,12 @@ public class Libreria extends Libro{
 		Ubicacion = pUbicacion;
 		Horario = pHorario;
 		Telefono = pTelefono;
-		
+		libros = null;
 	}
 	public Libreria() {
-		Nombre = "pNombre";
-		Pais = "pPais";
-		Ubicacion = "pUbicacion";
-		Horario = "pHorario";
-		Telefono = "pTelefono";
+	}
+	public Libreria(GestionLibros plibros) {
+		libros = plibros;
 	}
 	public void setNombreLibreria(String pNombre) {
 		Nombre = pNombre;
@@ -34,8 +32,8 @@ public class Libreria extends Libro{
 	public void setTelefono(String pTelefono) {
 		Telefono = pTelefono;
 	}
-	public void setlibro(Libro plibro) {
-		libro = plibro;
+	public void setlibro(GestionLibros plibros) {
+		libros = plibros;
 	}
 	public String getNombreLibreria() {
 		return Nombre;
@@ -52,7 +50,11 @@ public class Libreria extends Libro{
 	public String getTelefono() {
 		return Telefono;
 	}
-	public Libro getlibro() {
-		return libro;
+	public GestionLibros getlibros() {
+		return libros;
+	}
+	@Override
+	public String toString() {
+		return Nombre;
 	}
 }
