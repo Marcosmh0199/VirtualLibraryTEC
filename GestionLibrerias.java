@@ -1,8 +1,8 @@
-package Proyecto1;
+package control;
 
 public class GestionLibrerias extends Libreria {
 	
-	public static class Nodo extends Libreria{
+	public static class Nodo{
 		Nodo next;
 		Libreria libreria;
 		
@@ -14,7 +14,9 @@ public class GestionLibrerias extends Libreria {
 			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombre.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
 			this.next = null;
     	}
-
+		public Nodo(GestionLibros plibro) {
+			this.libreria.libros=plibro;
+		}
 		public Nodo(Libreria libreria, Nodo next) {
 			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombre.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
 			this.next = next;
@@ -42,61 +44,58 @@ public class GestionLibrerias extends Libreria {
     	this.tamaño = 0;
     	this.posicion = -1;
     }
-    public void insert(Libreria libreria) {
-		Nodo NuevoNodo = new Nodo(libreria);
-		this.current.setnext(NuevoNodo);
-		this.current=NuevoNodo;
-		if (this.current == this.tail) {
-			this.tail=tail.getnext();
-		}
-		this.tamaño++;
-	}
-    public void remove(String nombre) {
+    public void append(Libreria libreria) {
+    	Nodo NuevoNodo = new Nodo(libreria);
+        this.tail.setnext(NuevoNodo);
+        this.tail = NuevoNodo;
+        this.tamaño++;
+    }
+    public void setcurrent(Libreria libreria) {
+    	this.current = this.head.getnext();
+    	while (!this.current.getlibreria().Nombre.equals(libreria.Nombre)) {
+    		this.current = this.current.getnext();
+    	}
+    }
+    public void remove() {
+    	 //verificar que la lista no está vacía
         if (this.tamaño == 0){
             System.out.println("Lista vacía, no se puede remover ningún elemento");
             return;
-        } 
-        this.current=this.head.getnext();
-        Nodo temporal = this.head;
-        while (this.current!= null) {
-            if (this.current.getlibreria().Nombre.equals(nombre)){
-            	System.out.println("Sirvió");
-            	break;
-            }
-            this.current=this.current.getnext();
-            temporal=temporal.getnext();
         }
-        temporal.setnext(temporal.getnext());
+        //en temp se va a almacenar el nodo ANTERIOR al que se quiere borrar
+        Nodo temp = this.head;
+        while (temp.getnext() != this.current) {
+            temp = temp.getnext();
+        }
+        //borrar la referencia al nodo actual
+        temp.setnext(this.current.getnext());
+        //necesario si se esta borrando el último nodo
         if (this.current == this.tail) {
-            this.current = this.tail=temporal;
+            this.current = this.tail = temp;
             this.posicion--;
         }
         else
-            this.current =this.current.getnext();
+            //necesario si se está borrando un nodo diferente al último
+            this.current = this.current.getnext();
+
+        //disminuir el tamaño
         this.tamaño--;
     }
+    
     public void clear() {
         this.head = this.tail = this.current = new Nodo();
         this.posicion = -1;
         this.tamaño = 0;
     }
-    public Libreria getlibreria() {
+    public Libreria Getlibreria() {
     	return this.current.getlibreria();
     }
-    public void getdatos() {
-    	this.current = this.head.getnext();
-    	while (this.current !=null) {
-        	System.out.println("Nombre:"+this.getlibreria().Nombre);
-        	System.out.println("País:"+this.getlibreria().Pais);
-        	System.out.println("Ubicacion:"+this.getlibreria().Ubicacion);
-        	System.out.println("Horario:"+this.getlibreria().Horario);
-        	System.out.println("Telefono:"+this.getlibreria().Telefono);
-    		this.current=this.current.getnext();
-    	}
-    	this.current=this.head.getnext();
+    public GestionLibros getLibros(Libreria libreria) {
+    	return libreria.libros;
     }
-    
-    public static void main(String Args[]) {
-    		
+    public void eliminarlibro(Libreria plibreria,Libro libro) {
+    	plibreria.libros.setcurrent(libro);
+    	plibreria.libros.remove();
     }
 }
+
