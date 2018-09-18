@@ -13,10 +13,15 @@ public class Menu {
 
 	public JFrame frmMenu;
 
-	public static int x=0;
-	public static int y=0;
-	public VentanaGestionLibrerias ventana1 ;
-	public VentanaGestionLibros ventana2 ;
+	public static int a=0;
+	public static int b=0;
+	public static int c=0;
+	public static int d=0;
+	public static int e=0;
+	public VentanaGestionLibrerias ventana1;
+	public VentanaGestionLibros ventana2;
+	public VentanaBusquedaLibros ventana3;
+	public VentanaPedidoLibros ventana4;
 	/**
 	 * Launch the application.
 	 */
@@ -53,10 +58,9 @@ public class Menu {
 		JButton btnBotonFuncion1 = new JButton("Gesti\u00F3n de librer\u00EDas");
 		btnBotonFuncion1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (x==0) {
+				if (a==0) {
 					ventana1 = new VentanaGestionLibrerias();
-					ventana1.setVisible(true);
-					x=1;
+					a=1;
 				}
 				ventana1.setVisible(true);
 			}
@@ -67,10 +71,9 @@ public class Menu {
 		JButton btnBotonFuncion2 = new JButton("Gestion de Libros");
 		btnBotonFuncion2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (y==0) {
+				if (b==0) {
 					ventana2 = new VentanaGestionLibros();
-					ventana2.setVisible(true);
-					y=1;
+					b=1;
 				}
 				ventana2.setVisible(true);
 			}
@@ -79,10 +82,28 @@ public class Menu {
 		frmMenu.getContentPane().add(btnBotonFuncion2);
 		
 		JButton btnBotonFuncion3 = new JButton("Buscar Libros Disponibles");
+		btnBotonFuncion3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (c==0) {
+					ventana3 = new VentanaBusquedaLibros();
+					c=1;
+				}
+				ventana3.setVisible(true);
+			}
+		});
 		btnBotonFuncion3.setBounds(147, 89, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion3);
 		
 		JButton btnBotonFuncion4 = new JButton("Pedidos de Libros");
+		btnBotonFuncion4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (d==0) {
+					ventana4 = new VentanaPedidoLibros();
+					d=1;
+				}
+				ventana4.setVisible(true);
+			}
+		});
 		btnBotonFuncion4.setBounds(147, 123, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion4);
 		
