@@ -1,0 +1,219 @@
+package control;
+
+public class GestionBusquedaLibros {
+	
+	public class Node {
+		private Libro libro;
+	    private Node next;
+	    private Node previous;
+	    
+	    public Node() {
+	    	this.libro = null;
+	        this.next = null;
+	        this.previous = null;
+	    	}
+	    public Node(Libro libro) {
+	        this.libro = libro;
+	        this.next = null;
+	        this.previous = null;
+	    	}
+	    public Node(Libro libro,Node previous, Node next) {
+	        this.libro = libro;
+	        this.previous = previous;
+	        this.next = next;
+	    	} 
+	    public Libro getlibro() {
+	        return this.libro;
+	        }
+	    public void setlibro(Libro libro) {
+	        this.libro = libro;
+	        }
+	    public Node getnext() {
+	        return this.next;
+	        }
+
+	    public void setnext(Node next) {
+	        this.next = next;
+	        }
+
+	    public Node getprevious() {
+	        return this.previous;
+	        }
+	    public void setprevious(Node previous) {
+	        this.previous = previous;
+	        }
+	    }
+	    public Node head;
+	    public Node current;
+	    public Node tail;
+	    public int posicion;
+	    public int tamaño;
+
+	    public GestionBusquedaLibros(){
+	        this.head = new Node();
+	        this.current = this.head;
+	        this.tail = this.head;
+	        this.posicion = 0;
+	        this.tamaño = -1;
+	    }
+	    public void insert(Libro libro) {
+	        //insertar en cualquier posición
+	        Node newNode = new Node(libro, this.current, this.current.getnext());
+	        if (this.current != this.tail)
+	            this.current.getnext().setprevious(newNode);
+	        this.current.setnext(newNode);
+	        //necesario si se está insertando al final de la lista
+	        if (this.current == this.tail) {
+	            this.tail = tail.getnext();
+	        }
+	        this.tamaño++;
+	    }
+	    public void append(Libro libro) {
+	        Node newNode = new Node(libro, this.tail, null);
+	        this.tail.setnext(newNode);
+	        this.tail = newNode;
+	        this.tamaño++;
+	    }
+	    public void setcurrent(Libro libro) {
+	    	this.current = this.head.getnext();
+	    	while (!this.current.getlibro().Nombre.equals(libro.Nombre)) {
+	    		this.current = this.current.getnext();
+	    	}
+	    }
+	    public void remove(){
+	        if ((this.head == this.current) && (this.head == this.tail)){
+	            System.out.println("Lista vacía, no se puede remover ningún libroo");
+	            return;
+	        }
+	        if (this.head == this.current){
+	            System.out.println("Nodo especial no se puede borrar");
+	            return;
+	        }
+
+	        //último nodo
+	        if(this.current == this.tail){
+	            this.current.getprevious().setnext(null);
+	            this.posicion--;
+	            this.tail = this.current.getprevious();
+	        } else {
+	            this.current.getnext().setprevious(this.current.getprevious());
+	            this.current.getprevious().setnext(this.current.getnext());
+
+	        }
+	        this.current = this.current.getprevious();
+	        this.tamaño--;
+	    }
+
+	    public Libro getlibro(){
+	        return this.current.getlibro();
+	    }
+
+	    public int getSize() {
+	        return this.tamaño;
+	    }
+
+	    public boolean next() {
+	        if (this.current == this.tail) {
+	            System.out.println("Actualmente en último nodo, no se puede avanzar");
+	            return false;
+	        }
+	        this.current = this.current.getnext();
+	        this.posicion++;
+	        return true;
+	    }
+
+	    public boolean previous() {
+	        if (this.current == this.head) {
+	            System.out.println("Actualmente en primer nodo, no se puede retroceder");
+	            return false;
+	        }
+	        this.current = this.current.getprevious();
+	        this.posicion--;
+	        return true;
+	    }
+
+	    /**
+	     * Devuelve la representación en String de la lista
+	     * @return un string representado la lista
+	     */
+	    public String toString() {
+	        Node currentNode = this.head.getnext();
+
+	        StringBuffer result = new StringBuffer();
+
+	        for (int i = 0; currentNode != null; i++)
+	        {
+	            if (i > 0)
+	            {
+	                result.append(", ");
+	            }
+	            Libro libro = currentNode.getlibro();
+
+	            if(currentNode != this.tail)
+	                result.append(libro == null ? "" : libro + "(P: " + currentNode.getprevious().getlibro() + ", N: " + currentNode.getnext().getlibro() + ")");
+	            else
+	                result.append(libro == null ? "" : libro + "(P: " + currentNode.getprevious().getlibro() + ")");
+	            currentNode = currentNode.getnext();
+	        }
+	        result.append("\nHead: " + this.head.getlibro() + ", Current: " + this.current.getlibro() + ", Tail: " + this.tail.getlibro() );
+	        return result.toString();
+	    }
+	public void buscarpornombre(String nombre) {
+		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		Libreria libreria;
+		for (int i=0; i<posicion;i++) {
+			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria.libros.current = libreria.libros.head.getnext();
+			while (libreria.libros.current!=null) {
+				if(libreria.libros.Getlibro().Nombre.equals(nombre)) {
+				VentanaBusquedaLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+				}
+				libreria.libros.current=libreria.libros.current.getnext();
+			}
+		}
+	}
+	public void buscarporlibreria(Libreria libreria) {
+		libreria.libros.current = libreria.libros.head.getnext();
+		while (libreria.libros.current!=null) {
+			VentanaBusquedaLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+			libreria.libros.current=libreria.libros.current.getnext();
+		}
+	}
+	public void buscarportema(String tema) {
+		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		Libreria libreria;
+		for (int i=0; i<posicion;i++) {
+			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria.libros.current = libreria.libros.head.getnext();
+			while (libreria.libros.current!=null) {
+				if(libreria.libros.Getlibro().Tema.equals(tema)) {
+				VentanaBusquedaLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+				}
+				libreria.libros.current=libreria.libros.current.getnext();
+			}
+		}
+	}
+	public void buscarpornombre_libreria_tema_precio(Libreria libreria,String nombre,String tema, int minimo, int maximo) {
+		libreria.libros.current = libreria.libros.head.getnext();
+		while (libreria.libros.current!=null) {
+			if ((libreria.libros.Getlibro().Nombre.equals(nombre)) && (libreria.libros.Getlibro().Tema.equals(tema)) && (libreria.libros.Getlibro().Precio) > minimo && (libreria.libros.Getlibro().Precio < maximo)) {
+				VentanaBusquedaLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+			}	
+			libreria.libros.current=libreria.libros.current.getnext();
+		}
+	}
+	public void buscarporprecio(int minimo, int maximo) {
+		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		Libreria libreria;
+		for (int i=0; i<posicion;i++) {
+			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria.libros.current = libreria.libros.head.getnext();
+			while (libreria.libros.current!=null) {
+				if((Integer)libreria.libros.Getlibro().Precio > minimo && (Integer)libreria.libros.Getlibro().Precio < maximo) {
+					VentanaBusquedaLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+				}
+				libreria.libros.current=libreria.libros.current.getnext();
+			}
+		}
+	}
+}
