@@ -1,10 +1,7 @@
 package control;
 
-import control.GestionLibrerias.Nodo;
-
 public class GestionLibros extends Libro {
-	private static int x=0;
-	public class Nodo extends Libro{
+	public class Nodo{
 		Nodo next;
 		Libro libro;
 		
@@ -12,16 +9,21 @@ public class GestionLibros extends Libro {
 			this.libro= null;
 			this.next = null;
 		}
-		public Nodo(Libro libro) {
-			int cantidad = Integer.parseInt(VentanaGestionLibros.txtcantidad.getText());
-			int precio = Integer.parseInt(VentanaGestionLibros.txtprecio.getText());
-			this.libro = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombre.getText(), VentanaGestionLibros.cmbTema.getSelectedItem().toString(),VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
+		private Nodo(Libro libro, int a) {
+			if (a==0) {
+				int cantidad = Integer.parseInt(VentanaGestionLibros.txtcantidad.getText());
+				int precio = Integer.parseInt(VentanaGestionLibros.txtprecio.getText());
+				this.libro = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombrelibro.getText(), VentanaGestionLibros.cmbTema.getSelectedItem().toString(),VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
+			}
+			else {
+				this.libro = libro;
+			}
 			this.next = null;
     	}
-		public Nodo(Libro libro, Nodo next) {
+		private Nodo(Libro libro, Nodo next) {
 			int cantidad = Integer.parseInt(VentanaGestionLibros.txtcantidad.getText());
 			int precio = Integer.parseInt(VentanaGestionLibros.txtprecio.getText());
-			this.libro = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombre.getText(),VentanaGestionLibros.cmbTema.getSelectedItem().toString(), VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
+			this.libro = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombrelibro.getText(),VentanaGestionLibros.cmbTema.getSelectedItem().toString(), VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
 			this.next = next;
 		}
 		public Libro getlibro() {
@@ -49,14 +51,22 @@ public class GestionLibros extends Libro {
     }
     public void setcurrent(Libro libro) {
     	this.current = this.head.getnext();
-    	while (!this.current.getlibro().Nombre.equals(libro.Nombre)) {
+    	while (!this.current.getlibro().Issn.equals(libro.Issn)) {
     		this.current = this.current.getnext();
     	}
     }
-    public void append(Libro libro) {
-    	Nodo NuevoNodo = new Nodo(libro);
-        this.tail.setnext(NuevoNodo);
-        this.tail = NuevoNodo;
+    public void append(Libro libro,int a) {
+    	if (a==0) {
+    		Nodo NuevoNodo = new Nodo(libro,0);
+            this.tail.setnext(NuevoNodo);
+            this.tail = NuevoNodo;
+    	}
+    	else {
+    		Nodo NuevoNodo = new Nodo(libro,1);
+            this.tail.setnext(NuevoNodo);
+            this.tail = NuevoNodo;
+    	}	
+
         this.tamaño++;
     }
     
@@ -94,10 +104,19 @@ public class GestionLibros extends Libro {
     	if (plibreria.libros == null) {
     		plibreria.libros = new GestionLibros();
     	}
-    	plibreria.libros.append(libro);
+    	plibreria.libros.append(libro,0);
     }
     public Libro Getlibro() {
     	return this.current.getlibro();
+    }
+    public String Getlibros() {
+    	this.current=this.head.getnext();
+		String libros="";
+    	while (this.current!=null) {
+    		libros=this.current.getlibro().Nombre+","+libros;
+    		this.current=this.current.getnext();
+    	}
+    	return libros;
     }
     @Override
     public String toString() {
