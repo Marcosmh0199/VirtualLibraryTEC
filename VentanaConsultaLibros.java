@@ -1,6 +1,5 @@
 package control;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -128,7 +127,7 @@ public class VentanaConsultaLibros extends JFrame {
 		btnAnterior = new JButton("Anterior");
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//VentanaBusquedaLibros.buscarlibros.setcurrent(VentanaBusquedaLibros.libro);
+				VentanaBusquedaLibros.buscarlibros.setcurrent(VentanaBusquedaLibros.libro);
 				if (VentanaBusquedaLibros.buscarlibros.previous()!=false && (VentanaBusquedaLibros.buscarlibros.current!=VentanaBusquedaLibros.buscarlibros.head)) {
 					//VentanaBusquedaLibros.buscarlibros.current = VentanaBusquedaLibros.buscarlibros.current.getprevious();
 					String textovendida=String.valueOf(VentanaBusquedaLibros.buscarlibros.current.getlibro().CantidadVendida);
