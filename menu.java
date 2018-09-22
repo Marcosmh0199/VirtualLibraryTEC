@@ -1,27 +1,13 @@
-package control;
-
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
-
-public class Menu {
-
-	public JFrame frmMenu;
-
-	public static int a=0;
-	public static int b=0;
-	public static int c=0;
-	public static int d=0;
-	public static int e=0;
-	public VentanaGestionLibrerias ventana1;
-	public VentanaGestionLibros ventana2;
-	public VentanaBusquedaLibros ventana3;
-	public VentanaPedidoLibros ventana4;
+	private int a=0;
+	private int b=0;
+	private int c=0;
+	private int d=0;
+	private int f=0;
+	private VentanaGestionLibrerias ventana1;
+	private VentanaGestionLibros ventana2;
+	private VentanaBusquedaLibros ventana3;
+	private VentanaPedidoLibros ventana4;
+	private VentanaAtencionPedidos ventana5;
 	/**
 	 * Launch the application.
 	 */
@@ -108,6 +94,22 @@ public class Menu {
 		frmMenu.getContentPane().add(btnBotonFuncion4);
 		
 		JButton btnBotonFuncion5 = new JButton("Atenci\u00F3n de Pedidos");
+		btnBotonFuncion5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (f==0) {
+						ventana5 = new VentanaAtencionPedidos();
+						f=1;
+					}
+					ventana5.setVisible(true);
+					}
+		         catch(Exception d)
+		         {
+		        	 JOptionPane.showMessageDialog(null, "Por favor, ingresar a esta ventana solo despues de que haya sido solicitado al menos un pedido");
+		         }	
+
+			}
+		});
 		btnBotonFuncion5.setBounds(147, 199, 187, 23);
 		frmMenu.getContentPane().add(btnBotonFuncion5);
 		
