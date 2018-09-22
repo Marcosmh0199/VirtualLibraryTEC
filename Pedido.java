@@ -2,14 +2,14 @@ package control;
 
 public class Pedido {
 	String cedula,nombre,direccion,telefono,correo,estado,fecha;
-	GestionLibros libros;
+	GestionLibros librospedido;
 	Pedido(String pcedula,String pnombre,String pdireccion,String ptelefono,String pcorreo){
 		this.cedula = pcedula;
 		this.nombre = pnombre;
 		this.direccion = pdireccion;
 		this.telefono = ptelefono;
 		this.correo = pcorreo;
-		this.libros = new GestionLibros();
+		this.librospedido = null;
 		this.estado = "No";
 		this.fecha="";
 	}
@@ -29,7 +29,7 @@ public class Pedido {
 		this.correo=pcorreo;
 	}
 	public void setlibro(GestionLibros plibros) {
-		this.libros = plibros;
+		this.librospedido = plibros;
 	}
 	public String getCedula() {
 		return cedula;
@@ -47,8 +47,6 @@ public class Pedido {
 		return correo;
 	}
 	public GestionLibros getLibro() {
-		return libros;
-	}
-	
-		
+		return librospedido;
+	}		
 }
