@@ -35,7 +35,6 @@ public class GestionBusquedaLibros {
 	    public void setnext(Node next) {
 	        this.next = next;
 	        }
-
 	    public Node getprevious() {
 	        return this.previous;
 	        }
@@ -75,10 +74,10 @@ public class GestionBusquedaLibros {
 	        this.tamaño++;
 	    }
 	    public void setcurrent(Libro libro) {
-	    	this.current = this.head.getnext();
-	    	while (!this.current.getlibro().Nombre.equals(libro.Nombre)) {
-	    		this.current = this.current.getnext();
-	    	}
+			this.current = this.head.getnext();
+			while(!(this.current.libro.Nombre.equals(libro.Nombre))){
+				this.current.getnext();
+			}
 	    }
 	    public void remove(){
 	        if ((this.head == this.current) && (this.head == this.tail)){
@@ -89,8 +88,6 @@ public class GestionBusquedaLibros {
 	            System.out.println("Nodo especial no se puede borrar");
 	            return;
 	        }
-
-	        //último nodo
 	        if(this.current == this.tail){
 	            this.current.getprevious().setnext(null);
 	            this.posicion--;
@@ -131,38 +128,11 @@ public class GestionBusquedaLibros {
 	        this.posicion--;
 	        return true;
 	    }
-
-	    /**
-	     * Devuelve la representación en String de la lista
-	     * @return un string representado la lista
-	     */
-	    public String toString() {
-	        Node currentNode = this.head.getnext();
-
-	        StringBuffer result = new StringBuffer();
-
-	        for (int i = 0; currentNode != null; i++)
-	        {
-	            if (i > 0)
-	            {
-	                result.append(", ");
-	            }
-	            Libro libro = currentNode.getlibro();
-
-	            if(currentNode != this.tail)
-	                result.append(libro == null ? "" : libro + "(P: " + currentNode.getprevious().getlibro() + ", N: " + currentNode.getnext().getlibro() + ")");
-	            else
-	                result.append(libro == null ? "" : libro + "(P: " + currentNode.getprevious().getlibro() + ")");
-	            currentNode = currentNode.getnext();
-	        }
-	        result.append("\nHead: " + this.head.getlibro() + ", Current: " + this.current.getlibro() + ", Tail: " + this.tail.getlibro() );
-	        return result.toString();
-	    }
 	public void buscarpornombre(String nombre) {
-		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		int posicion = VentanaBusquedaLibros.libreriabox.getItemCount();
 		Libreria libreria;
 		for (int i=0; i<posicion;i++) {
-			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria = (Libreria)VentanaBusquedaLibros.libreriabox.getSelectedItem();
 			libreria.libros.current = libreria.libros.head.getnext();
 			while (libreria.libros.current!=null) {
 				if(libreria.libros.Getlibro().Nombre.equals(nombre)) {
@@ -180,10 +150,10 @@ public class GestionBusquedaLibros {
 		}
 	}
 	public void buscarportema(String tema) {
-		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		int posicion = VentanaBusquedaLibros.libreriabox.getItemCount();
 		Libreria libreria;
 		for (int i=0; i<posicion;i++) {
-			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria = (Libreria)VentanaBusquedaLibros.libreriabox.getSelectedItem();
 			libreria.libros.current = libreria.libros.head.getnext();
 			while (libreria.libros.current!=null) {
 				if(libreria.libros.Getlibro().Tema.equals(tema)) {
@@ -203,10 +173,10 @@ public class GestionBusquedaLibros {
 		}
 	}
 	public void buscarporprecio(int minimo, int maximo) {
-		int posicion = VentanaGestionLibros.LibreriaBox.getItemCount();
+		int posicion = VentanaBusquedaLibros.libreriabox.getItemCount();
 		Libreria libreria;
 		for (int i=0; i<posicion;i++) {
-			libreria = (Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem();
+			libreria =  (Libreria)VentanaBusquedaLibros.libreriabox.getItemAt(i);
 			libreria.libros.current = libreria.libros.head.getnext();
 			while (libreria.libros.current!=null) {
 				if((Integer)libreria.libros.Getlibro().Precio > minimo && (Integer)libreria.libros.Getlibro().Precio < maximo) {
@@ -214,6 +184,37 @@ public class GestionBusquedaLibros {
 				}
 				libreria.libros.current=libreria.libros.current.getnext();
 			}
+			
 		}
 	}
+	public void buscartodoslibros() {
+		int posicion = VentanaBusquedaLibros.libreriabox.getItemCount();
+		Libreria libreria;
+		for (int i=0; i<posicion;i++) {
+			libreria = (Libreria)VentanaBusquedaLibros.libreriabox.getItemAt(i);
+			libreria.libros.current = libreria.libros.head.getnext();
+			while (libreria.libros.current!=null) {
+				VentanaPedidoLibros.model.addRow(new Object[] { libreria.libros.Getlibro().Issn, libreria.libros.Getlibro(),libreria.libros.Getlibro().Tema });
+				VentanaPedidoLibros.model.fireTableDataChanged();
+				libreria.libros.current=libreria.libros.current.getnext();
+			}
+		}
+	}
+	public void alterarcantidad(String nombre) {
+		int posicion = VentanaBusquedaLibros.libreriabox.getItemCount();
+		Libreria libreria = null;
+		for (int i=0; i<posicion;i++) {
+			libreria = (Libreria)VentanaBusquedaLibros.libreriabox.getSelectedItem();
+			libreria.libros.current = libreria.libros.head.getnext();
+			while (libreria.libros.current!=null) {
+				if(libreria.libros.Getlibro().Nombre.equals(nombre)) {
+					libreria.libros.current.libro.CantidadDisponible = libreria.libros.current.libro.CantidadDisponible - 1;
+					libreria.libros.current.libro.CantidadVendida = libreria.libros.current.libro.CantidadVendida + 1;
+				}
+				libreria.libros.current=libreria.libros.current.getnext();
+			}
+		}
+		
+	}
+	
 }
