@@ -11,14 +11,14 @@ public class GestionLibrerias extends Libreria {
 			this.next = null;
 		}
 		public Nodo(Libreria libreria) {
-			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombre.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
+			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombreLibreria.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
 			this.next = null;
     	}
 		public Nodo(GestionLibros plibro) {
 			this.libreria.libros=plibro;
 		}
 		public Nodo(Libreria libreria, Nodo next) {
-			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombre.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
+			this.libreria = new Libreria(VentanaGestionLibrerias.txtnombreLibreria.getText(),VentanaGestionLibrerias.txtpais.getText(), VentanaGestionLibrerias.txtubicacion.getText(), VentanaGestionLibrerias.txthorario.getText(), VentanaGestionLibrerias.txttelefono.getText());
 			this.next = next;
 		}
 		public Libreria getlibreria() {
@@ -75,9 +75,8 @@ public class GestionLibrerias extends Libreria {
             this.posicion--;
         }
         else
-            //necesario si se está borrando un nodo diferente al último
-            this.current = this.current.getnext();
 
+            this.current = this.current.getnext();
         //disminuir el tamaño
         this.tamaño--;
     }
@@ -98,4 +97,3 @@ public class GestionLibrerias extends Libreria {
     	plibreria.libros.remove();
     }
 }
-
