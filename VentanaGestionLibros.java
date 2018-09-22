@@ -20,12 +20,15 @@ public class VentanaGestionLibros extends JFrame {
 	GestionLibrerias libreria = new GestionLibrerias();
 	public JPanel contentPane;
 	public static  JTextField txtissn;
-	public static  JTextField txtnombre;
+	public static  JTextField txtnombrelibro;
 	public static  JTextField txtcantidad;
 	public static  JTextField txtprecio;
 	public static  JTextArea txtdescripcion;
 	public static JComboBox<String> cmbTema = new JComboBox<String>();
 	public static JComboBox<Libreria> LibreriaBox = new JComboBox<Libreria>();
+	public static JComboBox<Libro> consultarlibrobox = new JComboBox<Libro>();
+	public static JComboBox<Libro> libromodificarbox = new JComboBox<Libro>();
+	public static JComboBox<Libreria> cmblibreriam = new JComboBox<Libreria>();
 	private JTextField txtcantidad2;
 	private JTextField txtissn2;
 	private JTextField txtnombre2;
@@ -34,6 +37,10 @@ public class VentanaGestionLibros extends JFrame {
 	private JTextField txtprecio2;
 	private JTextField txtlibreria2;
 	public static VentanaGestionLibros frame = new VentanaGestionLibros();
+	private JTextField txtpreciom;
+	private JTextField txtcantidadm;
+	private JTextField txtnombrem;
+	private JTextField txtissnm;
 	/**
 	 * Launch the application.
 	 */
@@ -56,7 +63,7 @@ public class VentanaGestionLibros extends JFrame {
 	public VentanaGestionLibros() {
 		setTitle("Gesti\u00F3n de Libros");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(0, 0, 845, 730);
+		setBounds(0, 0, 887, 776);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -91,10 +98,10 @@ public class VentanaGestionLibros extends JFrame {
 		contentPane.add(txtissn);
 		txtissn.setColumns(10);
 		
-		txtnombre = new JTextField();
-		txtnombre.setBounds(106, 59, 199, 20);
-		contentPane.add(txtnombre);
-		txtnombre.setColumns(10);
+		txtnombrelibro = new JTextField();
+		txtnombrelibro.setBounds(106, 59, 199, 20);
+		contentPane.add(txtnombrelibro);
+		txtnombrelibro.setColumns(10);
 		
 		txtcantidad = new JTextField();
 		txtcantidad.setColumns(10);
@@ -114,22 +121,29 @@ public class VentanaGestionLibros extends JFrame {
 		JComboBox<Libro> eliminarlibrosbox = new JComboBox<Libro>();
 		eliminarlibrosbox.setBounds(378, 37, 199, 20);
 		contentPane.add(eliminarlibrosbox);
+	
+		libromodificarbox.setBounds(488, 634, 182, 22);
+		contentPane.add(libromodificarbox);
 		
-		JComboBox<Libro> consultarlibrobox = new JComboBox<Libro>();
 		consultarlibrobox.setBounds(207, 401, 199, 20);
 		contentPane.add(consultarlibrobox);
+		
+
+		cmblibreriam.setBounds(588, 602, 199, 20);
+		contentPane.add(cmblibreriam);
 		
 		JButton btnAadirLibro = new JButton("A\u00F1adir Libro");
 		btnAadirLibro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int cantidad = Integer.parseInt(VentanaGestionLibros.txtcantidad.getText());
 				int precio = Integer.parseInt(VentanaGestionLibros.txtprecio.getText());
-				Libro libro2 = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombre.getText(), VentanaGestionLibros.cmbTema.getSelectedItem().toString(),VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
-				libros.append(libro2);
+				Libro libro2 = new Libro(VentanaGestionLibros.txtissn.getText(),VentanaGestionLibros.txtnombrelibro.getText(), VentanaGestionLibros.cmbTema.getSelectedItem().toString(),VentanaGestionLibros.txtdescripcion.getText(),cantidad,precio,(Libreria)VentanaGestionLibros.LibreriaBox.getSelectedItem());
+				libros.append(libro2,1);
 				eliminarlibrosbox.addItem(libro2);
 				consultarlibrobox.addItem(libro2);
-				//libros.añadirlibros((Libreria)LibreriaBox.getSelectedItem(),libro2);
-				libros.añadirlibros((Libreria)VentanaGestionLibrerias.consultarlibreriasbox.getSelectedItem(),libro2);
+				libromodificarbox.addItem(libro2);
+				
+				libros.añadirlibros((Libreria)LibreriaBox.getSelectedItem(),libro2);
 			}
 		});
 		btnAadirLibro.setBounds(207, 290, 113, 23);
@@ -141,7 +155,6 @@ public class VentanaGestionLibros extends JFrame {
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				VentanaGestionLibros.this.hide();
 			}
@@ -150,7 +163,7 @@ public class VentanaGestionLibros extends JFrame {
 		contentPane.add(btnVolver);
 		
 		
-		cmbTema.setModel(new DefaultComboBoxModel<String>(new String[] {"Ingenier\u00EDa", "Administraci\u00F3n", "Ciencias Naturales", "Artes", "Historia", "Matem\u00E1ticas", "Ficci\u00F3n", "Literatura"}));
+		cmbTema.setModel(new DefaultComboBoxModel(new String[] {"Ingenier\u00EDa", "Administraci\u00F3n", "Ciencias Naturales", "Artes", "Historia", "Matem\u00E1ticas", "Ficci\u00F3n", "Literatura"}));
 		cmbTema.setBounds(106, 87, 199, 20);
 		contentPane.add(cmbTema);
 		
@@ -171,9 +184,18 @@ public class VentanaGestionLibros extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				libreria.eliminarlibro((Libreria)LibreriaBox.getSelectedItem(),(Libro)eliminarlibrosbox.getSelectedItem());
+				libros.setcurrent((Libro)eliminarlibrosbox.getSelectedItem());
 				libros.remove();
+				int posicion = consultarlibrobox.getItemCount();
+				for(int i=0;i<posicion;i++) {
+					if (consultarlibrobox.getItemAt(i).Nombre.equals(eliminarlibrosbox.getSelectedItem().toString())) {
+						consultarlibrobox.removeItem(consultarlibrobox.getItemAt(i));
+						libromodificarbox.removeItem(libromodificarbox.getItemAt(i));
+						break;
+					}
+
+				}
 				eliminarlibrosbox.removeItem(eliminarlibrosbox.getSelectedItem());
-				consultarlibrobox.removeItem(consultarlibrobox.getSelectedItem());
 			}
 		});
 		btnEliminar.setBounds(378, 61, 89, 23);
@@ -304,6 +326,78 @@ public class VentanaGestionLibros extends JFrame {
 		lblModificarLibros.setBounds(603, 350, 89, 14);
 		contentPane.add(lblModificarLibros);
 		
-
+		txtpreciom = new JTextField();
+		txtpreciom.setColumns(10);
+		txtpreciom.setBounds(588, 571, 199, 20);
+		contentPane.add(txtpreciom);
+		
+		txtcantidadm = new JTextField();
+		txtcantidadm.setColumns(10);
+		txtcantidadm.setBounds(588, 546, 199, 20);
+		contentPane.add(txtcantidadm);
+		
+		JComboBox<String> cmbtemam = new JComboBox<String>();
+		cmbtemam.setModel(new DefaultComboBoxModel(new String[] {"Ingenier\u00EDa", "Administraci\u00F3n", "Ciencias Naturales", "Artes", "Historia", "Matem\u00E1ticas", "Ficci\u00F3n", "Literatura"}));
+		cmbtemam.setBounds(588, 428, 199, 20);
+		contentPane.add(cmbtemam);
+		
+		JTextArea txtdescripcionm = new JTextArea();
+		txtdescripcionm.setLineWrap(true);
+		txtdescripcionm.setBounds(588, 453, 199, 82);
+		contentPane.add(txtdescripcionm);
+		
+		JButton btnmodificar = new JButton("Modificar Libro");
+		btnmodificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int precio = Integer.parseInt(txtprecio.getText());
+				int cantidad = Integer.parseInt(txtcantidadm.getText());
+				((Libro)libromodificarbox.getSelectedItem()).setNombre(txtnombrem.getText());
+				((Libro)libromodificarbox.getSelectedItem()).setIssn(txtissnm.getText());
+				((Libro)libromodificarbox.getSelectedItem()).setTema((String)cmbtemam.getSelectedItem());
+				((Libro)libromodificarbox.getSelectedItem()).setDescripcion(txtdescripcionm.getText());
+				((Libro)libromodificarbox.getSelectedItem()).setPrecio(precio);
+				((Libro)libromodificarbox.getSelectedItem()).setCantidadDisponible(cantidad);
+			}
+		});
+		btnmodificar.setBounds(674, 633, 129, 23);
+		contentPane.add(btnmodificar);
+		
+		JLabel label = new JLabel("Libreria");
+		label.setBounds(492, 602, 66, 14);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("Precio");
+		label_1.setBounds(492, 577, 86, 14);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("Cantidad ");
+		label_2.setBounds(492, 552, 86, 14);
+		contentPane.add(label_2);
+		
+		JLabel label_3 = new JLabel("Descripci\u00F3n");
+		label_3.setBounds(492, 456, 86, 14);
+		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("Tema");
+		label_4.setBounds(492, 431, 86, 14);
+		contentPane.add(label_4);
+		
+		txtnombrem = new JTextField();
+		txtnombrem.setColumns(10);
+		txtnombrem.setBounds(588, 400, 199, 20);
+		contentPane.add(txtnombrem);
+		
+		JLabel label_5 = new JLabel("Nombre");
+		label_5.setBounds(492, 406, 86, 14);
+		contentPane.add(label_5);
+		
+		txtissnm = new JTextField();
+		txtissnm.setColumns(10);
+		txtissnm.setBounds(588, 375, 199, 20);
+		contentPane.add(txtissnm);
+		
+		JLabel label_6 = new JLabel("Issn");
+		label_6.setBounds(492, 381, 86, 14);
+		contentPane.add(label_6);
 	}
 }
