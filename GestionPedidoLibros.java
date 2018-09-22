@@ -2,7 +2,7 @@ package control;
 
 public class GestionPedidoLibros{
 	public class Nodo {
-
+		
 		private Pedido pedido;
 		private Nodo next;
 
@@ -36,7 +36,7 @@ public class GestionPedidoLibros{
 			this.next = next;
 		}    	
 	}
-	public Nodo top;
+	private Nodo top;
 	private int size;
 	public Nodo temp;
 	
@@ -82,14 +82,32 @@ public class GestionPedidoLibros{
 			temp = temp.getNext();
 		}
 	}
+	public void getlibrospedido() {
+		temp.getpedido().librospedido.current = temp.getpedido().librospedido.head.getnext();
+		while(temp.getpedido().librospedido.current!=null) {
+			VentanaPedidoLibros.model2.addRow(new Object[] { temp.getpedido().librospedido.current.libro, temp.getpedido().fecha,temp.getpedido().estado });
+			temp.getpedido().librospedido.current = temp.getpedido().librospedido.current.getnext();
+		}
+	}
+	public void eliminarlibropedido(Libro libro) {
+		int i=0;
+		temp.getpedido().librospedido.current = temp.getpedido().librospedido.head.getnext();
+		while(temp.getpedido().librospedido.current!=null) {
+			if (temp.getpedido().librospedido.current.libro == libro) {
+				temp.getpedido().librospedido.remove();
+				VentanaPedidoLibros.model2.removeRow(i);
+			}
+			i++;
+			temp.getpedido().librospedido.current=temp.getpedido().librospedido.current.getnext();
+		}
+	}
 	public String toString(){
 		String result = "**LStack**\n";
 		Nodo temp = top;
 		while(temp != null){
-			result+= temp.getpedido() + "\n";
+			result+= temp.getpedido().librospedido + "\n";
 			temp = temp.getNext();
 		}
 		return result;
 	}
 }
-
