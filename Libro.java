@@ -39,6 +39,9 @@ public class Libro {
 	public void setPrecio(int pPrecio) {
 		Precio = pPrecio;
 	}
+	public void setLibreria(Libreria plibreria) {
+		libreria = plibreria;
+	}
 	public String getIssn() {
 		return Issn;
 	}
@@ -59,6 +62,9 @@ public class Libro {
 	}
 	public int getPrecio() {
 		return Precio;
+	}
+	public Libreria getLibreria() {
+		return libreria;
 	}
 	@Override
 	public String toString() {
