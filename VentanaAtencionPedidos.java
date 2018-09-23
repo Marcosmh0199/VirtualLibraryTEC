@@ -1,5 +1,6 @@
-package control;
+package Control;
 
+//Librerias necesarias
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,15 +15,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 
+//Incicia la clase
 public class VentanaAtencionPedidos extends JFrame {
-
+	//variables necesarias, se encuentran variables de interfaz
 	private JPanel contentPane;
 	private JTextField txtcorreo;
 	private JTextField txtelefono;
 	private JTextField txtdireccion;
 	private JTextField txtnombre;
 	private JTextField txtcedula;
-	public static GestionAtencionPedidos pedidoscompaÃ±ia;
+	public static GestionAtencionPedidos pedidoscompañia;
 	private JTextField txtlibros;
 	private JTextField txtissnd;
 	private JTextField txtnombred;
@@ -32,10 +34,10 @@ public class VentanaAtencionPedidos extends JFrame {
 	private JTextField txtrpreciod;
 	private JTextField txtnombrelibrover;
 	private int cont=0;
-	/**
-	 * Launch the application.
-	 */
+	
+	//Main, se ejecuta la clase
 	public static void main(String[] args) {
+		//Creación de la ventana
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -48,10 +50,9 @@ public class VentanaAtencionPedidos extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	//Constructor de clase
 	public VentanaAtencionPedidos() {
+		//Código de la interfaz
 		setTitle("Atenci\u00F3n de Pedidos");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 593, 525);
@@ -59,7 +60,7 @@ public class VentanaAtencionPedidos extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+		//Etiquetas de palabras que se muestran en interfaz
 		JLabel lblCdula = new JLabel("C\u00E9dula");
 		lblCdula.setBounds(10, 11, 46, 14);
 		contentPane.add(lblCdula);
@@ -79,7 +80,7 @@ public class VentanaAtencionPedidos extends JFrame {
 		JLabel lblCorreoElectrnico = new JLabel("Correo Electr\u00F3nico");
 		lblCorreoElectrnico.setBounds(10, 113, 120, 14);
 		contentPane.add(lblCorreoElectrnico);
-		
+		//Cajas de ingreso de palabras en la interfaz 
 		txtcorreo = new JTextField();
 		txtcorreo.setEditable(false);
 		txtcorreo.setBounds(140, 110, 218, 20);
@@ -109,20 +110,23 @@ public class VentanaAtencionPedidos extends JFrame {
 		txtcedula.setColumns(10);
 		txtcedula.setBounds(140, 8, 218, 20);
 		contentPane.add(txtcedula);
-		
+		//Etiquetas que se ven en interfaz
 		JLabel lbllibros = new JLabel("Libros");
 		lbllibros.setBounds(10, 138, 46, 14);
 		contentPane.add(lbllibros);
-		
+		//Botón para atender pedido
 		JButton btnAtender = new JButton("Atender Pedido");
 		btnAtender.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VentanaPedidoLibros.pilapedido.settop(pedidoscompaÃ±ia.first().cedula);
-				VentanaPedidoLibros.pilapedido.temp.getpedido().estado = "Si";
+				//En la pila se lee la cédula
+				VentanaPedidoLibros.pilapedido.settop(pedidoscompañia.first().cedula);
+				VentanaPedidoLibros.pilapedido.temp.getpedido().estado = "Si";//Se cambia el estado
 				VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current = VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.head.getnext();
+				//se recorre la lista donde se encuantra los pedidos
 				while (VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current != null) {
 					VentanaBusquedaLibros.buscarlibros.alterarcantidad(VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.Nombre);
 					int posicion = VentanaGestionLibros.consultarlibrobox.getItemCount();
+					//ciclo que busca en el c
 					for(int i=0;i<posicion;i++) {
 						Libro libro = (Libro)VentanaGestionLibros.consultarlibrobox.getItemAt(i);
 						if(VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.Nombre.equals(libro.Nombre)) {
@@ -133,26 +137,28 @@ public class VentanaAtencionPedidos extends JFrame {
 					VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current = VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.getnext();
 					cont++;
 				}
+				//Cuando se realiza el envio del libro, automaticamente se envia un correo para confirmar el envio
 				try {
-					EnviarCorreo corr = new EnviarCorreo(pedidoscompaÃ±ia.first().correo,"Pedido Atenndido!","Buenas, le informamos que su pedido ya ha sido atendido, muchas gracias por usar VirtualLibraryTEC");
+					EnviarCorreo corr = new EnviarCorreo(pedidoscompañia.first().correo,"Pedido Atenndido!","Buenas, le informamos que su pedido ya ha sido atendido, muchas gracias por usar VirtualLibraryTEC");
 					JOptionPane.showMessageDialog(null, "Correo enviado!");
-				}
+				}//Robustez, en caso de que no pueda enviarse el correo
 				catch(Exception d){
-					JOptionPane.showMessageDialog(null, "DirecciÃ³n de correo erronea o fallo de internet");
-				}
+					JOptionPane.showMessageDialog(null, "Dirección de correo erronea o fallo de internet");
+				}//EL ciclo es para eliminar el pedido de la lista
 				for (int i=0;i<cont;i++) {
-					pedidoscompaÃ±ia.dequeue();
+					pedidoscompañia.dequeue();
 					}
+				//Se busca todos los datos para verficar que aun hay libros pendientes de enviar
 				try {
-					txtcedula.setText(pedidoscompaÃ±ia.first().cedula);
-					txtnombre.setText(pedidoscompaÃ±ia.first().nombre);
-					txtdireccion.setText(pedidoscompaÃ±ia.first().direccion);
-					txtelefono.setText(pedidoscompaÃ±ia.first().telefono);
-					txtcorreo.setText(pedidoscompaÃ±ia.first().correo);
-					txtlibros.setText(pedidoscompaÃ±ia.first().librospedido.Getlibros());
-				}
+					txtcedula.setText(pedidoscompañia.first().cedula);
+					txtnombre.setText(pedidoscompañia.first().nombre);
+					txtdireccion.setText(pedidoscompañia.first().direccion);
+					txtelefono.setText(pedidoscompañia.first().telefono);
+					txtcorreo.setText(pedidoscompañia.first().correo);
+					txtlibros.setText(pedidoscompañia.first().librospedido.Getlibros());
+				}//Ribustez, cuando no hay libro se envia esta advertencia
 		        catch(Exception d){
-		        	 JOptionPane.showMessageDialog(null, "El Ãºltimo pedido ya fue atendido");
+		        	 JOptionPane.showMessageDialog(null, "El último pedido ya fue atendido");
 		        }
 				finally
 		        {
@@ -167,7 +173,7 @@ public class VentanaAtencionPedidos extends JFrame {
 		});
 		btnAtender.setBounds(10, 163, 139, 23);
 		contentPane.add(btnAtender);
-		
+		//boton para volver atras
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -176,19 +182,19 @@ public class VentanaAtencionPedidos extends JFrame {
 		});
 		btnVolver.setBounds(159, 163, 96, 23);
 		contentPane.add(btnVolver);
-		
+		//Cuandro donde se ingresa palabras
 		txtlibros = new JTextField();
 		txtlibros.setEditable(false);
 		txtlibros.setBounds(140, 135, 218, 20);
 		contentPane.add(txtlibros);
 		txtlibros.setColumns(10);
-		
-		txtcedula.setText(pedidoscompaÃ±ia.first().cedula);
-		txtnombre.setText(pedidoscompaÃ±ia.first().nombre);
-		txtdireccion.setText(pedidoscompaÃ±ia.first().direccion);
-		txtelefono.setText(pedidoscompaÃ±ia.first().telefono);
-		txtcorreo.setText(pedidoscompaÃ±ia.first().correo);
-		txtlibros.setText(pedidoscompaÃ±ia.first().librospedido.Getlibros());
+		//se añaden los datos del libro a la parte baja de la interfaz
+		txtcedula.setText(pedidoscompañia.first().cedula);
+		txtnombre.setText(pedidoscompañia.first().nombre);
+		txtdireccion.setText(pedidoscompañia.first().direccion);
+		txtelefono.setText(pedidoscompañia.first().telefono);
+		txtcorreo.setText(pedidoscompañia.first().correo);
+		txtlibros.setText(pedidoscompañia.first().librospedido.Getlibros());
 		
 		txtissnd = new JTextField();
 		txtissnd.setEditable(false);
@@ -230,7 +236,7 @@ public class VentanaAtencionPedidos extends JFrame {
 		txtrpreciod.setColumns(10);
 		txtrpreciod.setBounds(145, 414, 144, 20);
 		contentPane.add(txtrpreciod);
-		
+		//Etiquetas que se muestran en pantalla
 		JLabel label = new JLabel("Precio en Dolares");
 		label.setBounds(10, 417, 125, 14);
 		contentPane.add(label);
@@ -258,13 +264,16 @@ public class VentanaAtencionPedidos extends JFrame {
 		JLabel label_6 = new JLabel("Issn");
 		label_6.setBounds(10, 209, 46, 14);
 		contentPane.add(label_6);
-		
+		//boton para ver el detalle del libro que desea comprar
 		JButton btnVerDetalleLibro = new JButton("Ver Detalle Libro");
 		btnVerDetalleLibro.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current = VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.head.getnext();
+				//Buscar el libro en la lista de libros
 				while (VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current != null) {
+					//busca por nombre en la lista donde se encuntra el libro
 					if (VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.Nombre.equals(txtnombrelibrover.getText())) {
+						//Se obtiene cada detalle del libro
 						String textovendida=String.valueOf(VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.CantidadVendida);
 						String textodisponible=String.valueOf(VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.CantidadDisponible);
 						String textoprecio=String.valueOf(VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.libro.Precio);
@@ -276,20 +285,23 @@ public class VentanaAtencionPedidos extends JFrame {
 						txtdisponibled.setText(textodisponible);
 						txtrpreciod.setText(textoprecio);
 					}
+					//se mueve el current
 					VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current = VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current.getnext();
 				}
+				//se actualiza el while.
 				VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.current = VentanaPedidoLibros.pilapedido.temp.getpedido().librospedido.head.getnext();
 
 			}
 		});
+		//Boton de ver detalle
 		btnVerDetalleLibro.setBounds(265, 163, 141, 23);
 		contentPane.add(btnVerDetalleLibro);
-		
+		//cuadro donde se ingresa tecxto
 		txtnombrelibrover = new JTextField();
 		txtnombrelibrover.setBounds(416, 164, 151, 23);
 		contentPane.add(txtnombrelibrover);
 		txtnombrelibrover.setColumns(10);
-		
+		//Etiqueta que se muestra en pantalla
 		JLabel lblNombreDelLibro = new JLabel("Nombre del Libro");
 		lblNombreDelLibro.setBounds(416, 141, 151, 14);
 		contentPane.add(lblNombreDelLibro);
